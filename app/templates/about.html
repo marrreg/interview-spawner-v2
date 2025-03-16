@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mb-5">
+        <h1 class="display-4">About This Application</h1>
+        <p class="lead">Transforming customer research with AI-powered interview simulations</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <h2>What is AI-Powered Customer Discovery?</h2>
+                <p>
+                    This application leverages advanced AI technologies to simulate dozens or hundreds of customer interviews simultaneously. By creating diverse, realistic personas and conducting in-depth conversations with them, the system can quickly identify key customer pain points, needs, and opportunities.
+                </p>
+                <p>
+                    Traditional customer discovery can be time-consuming and limited by the number of interviews that can be reasonably conducted. Our AI approach allows you to scale your research and gain deeper insights without the logistical challenges of traditional methods.
+                </p>
+                
+                <h3 class="mt-4">How It Works</h3>
+                <div class="row mt-3">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <i class="bi bi-lightbulb text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">1. Define Context</h5>
+                            <p class="small">Provide information about your product, service, or research area.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <i class="bi bi-people text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">2. Generate Personas</h5>
+                            <p class="small">AI creates diverse, realistic user personas relevant to your context.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <i class="bi bi-chat-dots text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">3. Simulate Interviews</h5>
+                            <p class="small">AI conducts multiple parallel conversations with these personas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6 text-center mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <i class="bi bi-graph-up text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">4. Extract Insights</h5>
+                            <p class="small">Key themes and pain points are identified across all conversations.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center mb-3">
+                        <div class="p-3 bg-light rounded">
+                            <i class="bi bi-clipboard-data text-primary" style="font-size: 2rem;"></i>
+                            <h5 class="mt-2">5. Present Findings</h5>
+                            <p class="small">Insights are aggregated and presented in an actionable format.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="mt-4">Technical Architecture</h3>
+                <p>
+                    This application is built using a combination of advanced technologies:
+                </p>
+                <ul>
+                    <li><strong>Claude 3.7 Sonnet:</strong> Used for creating detailed, realistic personas with complex characteristics</li>
+                    <li><strong>GPT-4-o-mini:</strong> Powers the interview conversations and insight extraction</li>
+                    <li><strong>Flask:</strong> Backend API handling simulation management and data processing</li>
+                    <li><strong>Modern JavaScript:</strong> Frontend interface for real-time interaction and visualization</li>
+                </ul>
+                
+                <h3 class="mt-4">Benefits</h3>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Scale:</strong> Conduct dozens or hundreds of interviews simultaneously</li>
+                            <li><strong>Speed:</strong> Get results in minutes instead of weeks</li>
+                            <li><strong>Diversity:</strong> Access a wider range of personas than typically possible</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Cost-effectiveness:</strong> Reduce the expense of traditional research</li>
+                            <li><strong>Depth:</strong> Ask follow-up questions that probe deeper into motivations</li>
+                            <li><strong>Actionable Insights:</strong> Receive organized, prioritized findings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mb-5">
+            <a href="/" class="btn btn-primary">Start Your Research</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 

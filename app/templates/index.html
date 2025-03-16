@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 text-center mb-5">
+        <h1 class="display-4">AI-Powered Customer Discovery</h1>
+        <p class="lead">Optimize your customer research with parallel AI-driven interviews to uncover key insights.</p>
+    </div>
+</div>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Start a New Discovery Simulation</h3>
+            </div>
+            <div class="card-body">
+                <form id="simulation-form">
+                    <div class="mb-3">
+                        <label for="context" class="form-label">Research Context</label>
+                        <textarea class="form-control" id="context" rows="4" placeholder="Describe your product, service, or problem area for research (e.g., 'A mobile app for personal finance management targeting millennials')"></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="num-personas" class="form-label">Number of Personas</label>
+                            <input type="range" class="form-range" id="num-personas" min="3" max="20" value="5">
+                            <div class="text-center"><span id="num-personas-value">5</span> personas</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="max-turns" class="form-label">Conversation Depth</label>
+                            <input type="range" class="form-range" id="max-turns" min="5" max="20" value="10">
+                            <div class="text-center"><span id="max-turns-value">10</span> turns</div>
+                        </div>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Start Research</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="simulations-container" class="d-none">
+    <h2 class="mb-4">Your Simulations</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Context</th>
+                    <th>Personas</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="simulations-table-body">
+                <!-- Simulations will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Simulation Dashboard Modal -->
+<div class="modal fade" id="simulationModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="bi bi-bar-chart-line me-2"></i>
+                    Simulation Dashboard
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Progress and Status -->
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <i class="bi bi-graph-up me-2"></i>
+                                Simulation Progress
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <strong>Status:</strong> 
+                                        <span id="status-badge" class="badge bg-secondary ms-2">Initializing</span>
+                                    </div>
+                                    <div id="parallel-execution-indicator" style="display: none;" class="badge bg-info text-dark">
+                                        <i class="bi bi-arrow-left-right"></i> Parallel Mode
+                                    </div>
+                                </div>
+                                
+                                <div class="progress">
+                                    <div id="simulation-progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                
+                                <div id="simulation-status" class="d-flex justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-clock me-2 text-primary"></i>
+                                        <span>Elapsed: <span id="elapsed-time" class="fw-bold">0:00</span></span>
+                                    </div>
+                                </div>
+                                
+                                <div id="simulation-metrics" class="row text-center">
+                                    <div class="col-4">
+                                        <h4 id="personas-count">0</h4>
+                                        <small class="text-muted">Personas</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h4 id="conversations-count">0</h4>
+                                        <small class="text-muted">Conversations</small>
+                                    </div>
+                                    <div class="col-4">
+                                        <h4 id="messages-count">0</h4>
+                                        <small class="text-muted">Messages</small>
+                                    </div>
+                                </div>
+                                
+                                <div id="active-conversations-container" style="display: none;">
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-chat-dots"></i> <span id="active-conversations">0</span> Active Conversations
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <i class="bi bi-dpad me-2"></i>
+                                Controls
+                            </div>
+                            <div class="card-body">
+                                <div class="d-grid gap-2">
+                                    <button id="start-simulation-btn" class="btn btn-success">
+                                        <i class="bi bi-play-fill me-2"></i>Start
+                                    </button>
+                                    <button id="stop-simulation-btn" class="btn btn-danger">
+                                        <i class="bi bi-stop-fill me-2"></i>Stop
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Insights -->
+                    <div class="col-md-8">
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <i class="bi bi-lightbulb me-2"></i>
+                                Key Insights
+                                <span class="float-end">
+                                    <i class="bi bi-info-circle text-muted" data-bs-toggle="tooltip" title="Key findings from customer interviews"></i>
+                                </span>
+                            </div>
+                            <div class="card-body p-3">
+                                <div id="insights-container" class="py-1">
+                                    <p class="text-center text-muted py-4">
+                                        <i class="bi bi-search fs-2 d-block mb-3"></i>
+                                        Insights will appear here as conversations progress
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tabs for details -->
+                <ul class="nav nav-tabs mt-4" id="simulationTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="personas-tab" data-bs-toggle="tab" data-bs-target="#personas" type="button" role="tab">
+                            <i class="bi bi-people me-2"></i>Personas
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="conversations-tab" data-bs-toggle="tab" data-bs-target="#conversations" type="button" role="tab">
+                            <i class="bi bi-chat-dots me-2"></i>Conversations
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="simulationTabContent">
+                    <!-- Personas Tab -->
+                    <div class="tab-pane fade show active" id="personas" role="tabpanel">
+                        <div id="personas-container" class="row g-3">
+                            <p class="text-center text-muted py-4">
+                                <i class="bi bi-person-bounding-box fs-2 d-block mb-3"></i>
+                                Personas will appear here once generated
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Conversations Tab -->
+                    <div class="tab-pane fade" id="conversations" role="tabpanel">
+                        <div id="conversations-container">
+                            <p class="text-center text-muted py-4">
+                                <i class="bi bi-chat-square-text fs-2 d-block mb-3"></i>
+                                Conversations will appear here once started
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-2"></i>Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Display the values of sliders
+    document.getElementById('num-personas').addEventListener('input', function() {
+        document.getElementById('num-personas-value').textContent = this.value;
+    });
+    
+    document.getElementById('max-turns').addEventListener('input', function() {
+        document.getElementById('max-turns-value').textContent = this.value;
+    });
+</script>
+{% endblock %} 
