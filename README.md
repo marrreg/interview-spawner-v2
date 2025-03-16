@@ -34,7 +34,7 @@ An application that optimizes customer research by simulating realistic, paralle
    
 4. Run the application:
    ```
-   python app/app.py
+   python -m app.app
    ```
    
 5. Open your browser to `http://localhost:5000`
